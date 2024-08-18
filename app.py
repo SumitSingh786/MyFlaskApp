@@ -5,7 +5,7 @@ app = Flask(__name__)
 from model import db
 @app.route('/')
 def hello_world():  # put application's code here
-    return '<h1>Welcome To The World of Flask</h1>'
+    return '<h1>Welcome To The World of Flask :)</h1>'
 
 @app.route('/api/items',methods=['GET'])
 def getAllProducts():  # put application's code here
