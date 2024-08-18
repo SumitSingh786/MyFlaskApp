@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                // Get some code from a GitHub repository
+                git url: 'https://github.com/SumitSingh786/MyFlaskApp.git'
+
+                // Run Maven on a Unix agent.
+                script{
+                    if(isUnix()){
+                        sh "pip3 install -r requirements.txt"
+                    }
+                    else{
+                        bat "pip install -r requirements.txt"
+                    }
+                }
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                // Run Maven on a Unix agent.
+                script{
+                    if(isUnix()){
+                        sh "pytest"
+                    }
+                    else{
+                        bat "pytest"
+                    }
+                }
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                script{
+                if(isUnix()){
+                sh "docker build -t myflaskimg ."
+                }
+                else{
+                 bat "docker build -t myflaskimg ."
+                 }
+                 }
+
+            }
+        }
+
+        stage('Docker Run') {
+            steps {
+                script{
+                if(isUnix()){
+                    // Stop and remove the existing container if it exists
+                    def existingContainer = sh(script: "docker ps -q -f name=${CONTAINER_NAME}", returnStdout: true).trim()
+                    if (existingContainer) {
+                        sh "docker stop ${existingContainer}"
+                        sh "docker rm ${existingContainer}"
+                    }
+                    sh "docker run -d --name flaskapp -p 5000:5000 myflaskimg "
+                }
+                else{
+                 bat "docker run -d --name flaskapp -p 5000:5000 myflaskimg"
+                 }
+                 }
+
+            }
+        }
+    }
+}

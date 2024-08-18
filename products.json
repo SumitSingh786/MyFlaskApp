@@ -1,0 +1,17 @@
+[
+  {
+    "productId": 4321,
+    "productName": "Iphone15Pro",
+    "price": 90000.5
+  },
+  {
+    "productId": 123321,
+    "productName": "OnePlus12R",
+    "price": 28882
+  },
+  {
+    "productId": 1234,
+    "productName": "Lava note13",
+    "price": 77777
+  }
+]
